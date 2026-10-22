@@ -22,7 +22,6 @@ Se a cidade não existir ou a API retornar algo inválido, o bot responde:
 |---|---|
 | `workflow-chatbot-telegram.json` | Workflow exportado do n8n (sem credenciais) |
 | `docker-compose.yml` | Stack do n8n + túnel HTTPS (ngrok) para rodar localmente / no Portainer |
-| `.env.example` | Modelo das variáveis de ambiente (sem valores reais) |
 | `README.md` | Este documento |
 
 ---
