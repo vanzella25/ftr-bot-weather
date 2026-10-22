@@ -1,0 +1,48 @@
+# Stack do n8n + túnel HTTPS (ngrok) para o chatbot do Telegram.
+# No Portainer: Stacks > Add stack > Web editor > cole este arquivo
+# e preencha as variáveis em "Environment variables".
+#
+# O token do Telegram (TELEGRAM_BOT_TOKEN) NÃO é passado ao container:
+# ele é cadastrado diretamente na credencial do Telegram dentro do n8n.
+#
+# Variáveis esperadas:
+#   OPENWEATHER_API_KEY  - chave da API da OpenWeather
+#   NGROK_AUTHTOKEN      - authtoken da sua conta ngrok
+#   NGROK_DOMAIN         - domínio estático gratuito do ngrok (ex.: meu-bot.ngrok-free.app)
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+      - TZ=America/Sao_Paulo
+      - N8N_PORT=5678
+      - N8N_SECURE_COOKIE=false
+      - N8N_RUNNERS_ENABLED=true
+      # URL pública usada pelo Telegram para chamar o webhook (precisa ser HTTPS)
+      - WEBHOOK_URL=https://${NGROK_DOMAIN}/
+      # Permite que expressões como {{ $env.OPENWEATHER_API_KEY }} funcionem nos nós
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      # Variáveis do projeto (valores definidos no Portainer)
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: n8n-ngrok
+    restart: unless-stopped
+    depends_on:
+      - n8n
+    command: http --url=${NGROK_DOMAIN} n8n:5678
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    ports:
+      - "4040:4040"
+
+volumes:
+  n8n_data:
