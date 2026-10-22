@@ -36,7 +36,7 @@ Telegram Trigger → Capturar Entrada → Normalizar Cidade → Consultar OpenWe
 
 1. **Telegram Trigger** – recebe as mensagens de texto enviadas ao bot.
 2. **Capturar Entrada** (Set) – guarda o texto recebido na variável `queue` e o `chatId`.
-3. **Normalizar Cidade** (Code) – remove acentos, converte para minúsculas, remove espaços extras (inclusive ao redor das vírgulas) e monta a consulta no formato `cidade,br`. Ex.: `São Paulo , SP, BR` → `sao paulo,br`.
+3. **Formata Cidade** (Code) – remove acentos, converte para minúsculas, remove espaços extras (inclusive ao redor das vírgulas) e monta a consulta no formato `cidade,br`. Ex.: `São Paulo , SP, BR` → `sao paulo,br`.
    > A OpenWeather só aceita código de estado para cidades dos EUA, por isso a UF é lida e guardada, mas a consulta é feita com `cidade,br`.
 4. **Consultar OpenWeather** (HTTP Request) – `GET https://api.openweathermap.org/data/2.5/weather` com *Send Query Parameters* ativado:
    - `q` / `queue`: mensagem formatada
