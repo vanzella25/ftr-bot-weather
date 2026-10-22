@@ -148,5 +148,4 @@ Também funciona enviando só o nome da cidade (ex.: `Curitiba`).
 ## 🔒 Segurança
 
 - O `workflow-chatbot-telegram.json` **não contém** tokens, chaves nem IDs de credenciais.
-- Nunca faça commit do arquivo `.env`; adicione-o ao `.gitignore`.
-- Antes de publicar o repositório, confira com `grep -i "token\|appid\|key" workflow-chatbot-telegram.json` que só aparecem referências a variáveis.
+- Nunca faça commit ou deixe as credenciais expostas. 
